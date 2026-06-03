@@ -1,0 +1,360 @@
+<!-- <% layout("/layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+
+
+    <h3>Edit your Listing</h3>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
+            <div class="valid-feedback">Title looks good!</div>
+        </div>
+        
+        <div>
+            <label for="title" class="form-label">Description</label>
+            <textarea name="listing[description]" required class="form-control"><%= listing.description %></textarea>
+            <div class="invalid-feedback">Please enter a short Description</div>
+        </div>
+
+        <div class="mb-3">
+            Original Listing Image <br>
+            <img src="<%= originalImageUrl %>">
+        </div>
+        
+        <div>
+            <label for="image" class="form-label">Upload New Image</label>
+            <input name="listing[image]"  type="file" class="form-control">
+        </div>
+        
+        <div class="row">
+        <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input name="listing[price]" value="<%= listing.price %>" type="text" class="form-control" required>
+            <div class="invalid-feedback">Please enter valid Price</div>
+        </div>
+        
+        
+
+        <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required>
+        </div>
+        <div class="invalid-feedback">Please enter Country name</div>
+        </div>
+
+        <div>
+            <label for="location" class="form-label">Location</label>
+            <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required>
+            <div class="invalid-feedback">Please enter Location name</div>
+        </div>
+        
+        <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" class="form-select" id="category">
+        <option value="trending" <%= listing.category === "trending" ? "selected" : "" %>>Trending</option>
+        <option value="rooms" <%= listing.category === "rooms" ? "selected" : "" %>>Rooms</option>
+        <option value="iconic cities" <%= listing.category === "iconic cities" ? "selected" : "" %>>Iconic Cities</option>
+        <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
+        <option value="castles" <%= listing.category === "castles" ? "selected" : "" %>>Castles</option>
+        <option value="amazing pools" <%= listing.category === "amazing pools" ? "selected" : "" %>>Amazing Pools</option>
+        <option value="camping" <%= listing.category === "camping" ? "selected" : "" %>>Camping</option>
+        <option value="farms" <%= listing.category === "farms" ? "selected" : "" %>>Farms</option>
+        <option value="arctic" <%= listing.category === "arctic" ? "selected" : "" %>>Arctic</option>
+        </select>
+        </div>
+        
+        <button class="btn btn-dark edit-btn mt-3">Edit</button>
+        <br><br>
+    </form>
+    </div>
+</div> -->
+
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    :root {
+        --dd-primary: #ff528d;
+        --dd-accent: #f4b740;
+        --dd-ink: #1a1a1a;
+        --dd-muted: #6b6b6b;
+        --dd-line: rgba(0, 0, 0, 0.08);
+        --dd-sand: #faf6f1;
+    }
+
+    .dd-edit-wrap {
+        background: var(--dd-sand);
+        min-height: 100vh;
+        padding: 3rem 0 5rem;
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .dd-edit-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 2.75rem 3rem;
+        box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.18),
+                    0 1px 0 rgba(0, 0, 0, 0.04);
+        border: 1px solid var(--dd-line);
+    }
+
+    .dd-edit-eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+        color: var(--dd-primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .dd-edit-title {
+        font-family: 'Fraunces', 'Cormorant Garamond', serif;
+        font-size: 2.4rem;
+        font-weight: 500;
+        color: var(--dd-ink);
+        letter-spacing: -0.02em;
+        margin-bottom: 0.4rem;
+    }
+
+    .dd-edit-sub {
+        color: var(--dd-muted);
+        font-size: 0.95rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .dd-edit-divider {
+        height: 1px;
+        background: var(--dd-line);
+        margin: 2rem 0 1.75rem;
+    }
+
+    .dd-edit-section-label {
+        font-family: 'Fraunces', serif;
+        font-size: 1.05rem;
+        color: var(--dd-ink);
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    .dd-field { margin-bottom: 1.4rem; }
+
+    .dd-field label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--dd-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .dd-input,
+    .dd-select,
+    .dd-textarea {
+        width: 100%;
+        background: #fff;
+        border: 1px solid var(--dd-line);
+        border-radius: 14px;
+        padding: 0.85rem 1.1rem;
+        font-size: 0.95rem;
+        color: var(--dd-ink);
+        font-family: inherit;
+        transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+
+    .dd-input:focus,
+    .dd-select:focus,
+    .dd-textarea:focus {
+        outline: none;
+        border-color: var(--dd-primary);
+        box-shadow: 0 0 0 4px rgba(255, 82, 141, 0.12);
+        background: #fff;
+    }
+
+    .dd-textarea { min-height: 130px; resize: vertical; }
+
+    .dd-file {
+        width: 100%;
+        padding: 0.65rem 0.9rem;
+        border: 1.5px dashed rgba(0, 0, 0, 0.18);
+        border-radius: 14px;
+        background: var(--dd-sand);
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    .dd-file:hover { border-color: var(--dd-primary); }
+
+    .dd-current-img {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid var(--dd-line);
+        background: var(--dd-sand);
+    }
+    .dd-current-img img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        display: block;
+    }
+    .dd-current-img .dd-img-tag {
+        position: absolute;
+        top: 0.85rem;
+        left: 0.85rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(6px);
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--dd-ink);
+    }
+
+    .dd-row { display: grid; grid-template-columns: 1fr 2fr; gap: 1.25rem; }
+    @media (max-width: 640px) { .dd-row { grid-template-columns: 1fr; } }
+
+    .dd-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--dd-line);
+    }
+
+    .dd-btn-save {
+        background: var(--dd-ink);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.85rem 2.25rem;
+        font-weight: 600;
+        font-size: 0.92rem;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        transition: transform .15s ease, background .2s;
+    }
+    .dd-btn-save:hover {
+        background: var(--dd-primary);
+        transform: translateY(-1px);
+    }
+
+    .dd-btn-cancel {
+        color: var(--dd-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 0.85rem 1rem;
+        font-weight: 500;
+    }
+    .dd-btn-cancel:hover { color: var(--dd-ink); }
+
+    .invalid-feedback, .valid-feedback {
+        font-size: 0.78rem;
+        margin-top: 0.4rem;
+    }
+</style>
+
+<div class="dd-edit-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="dd-edit-card">
+                    <div class="dd-edit-eyebrow">Editing diary</div>
+                    <h1 class="dd-edit-title">Refine your listing</h1>
+                    <p class="dd-edit-sub">Polish the details so the right traveller falls in love at first glance.</p>
+
+                    <form method="POST"
+                          action="/listings/<%= listing._id %>?_method=PUT"
+                          novalidate
+                          class="needs-validation"
+                          enctype="multipart/form-data">
+
+                        <div class="dd-edit-section-label">The story</div>
+
+                        <div class="dd-field">
+                            <label for="title">Title</label>
+                            <input name="listing[title]" id="title"
+                                   value="<%= listing.title %>"
+                                   type="text" class="dd-input" required>
+                            <div class="valid-feedback">Title looks good!</div>
+                        </div>
+
+                        <div class="dd-field">
+                            <label for="description">Description</label>
+                            <textarea name="listing[description]" id="description"
+                                      required class="dd-textarea"><%= listing.description %></textarea>
+                            <div class="invalid-feedback">Please enter a short description</div>
+                        </div>
+
+                        <div class="dd-edit-divider"></div>
+                        <div class="dd-edit-section-label">Imagery</div>
+
+                        <div class="dd-field">
+                            <div class="dd-current-img">
+                                <span class="dd-img-tag">Current</span>
+                                <img src="<%= originalImageUrl %>" alt="Current listing image">
+                            </div>
+                        </div>
+
+                        <div class="dd-field">
+                            <label for="image">Upload a new image</label>
+                            <input name="listing[image]" id="image"
+                                   type="file" class="dd-file">
+                        </div>
+
+                        <div class="dd-edit-divider"></div>
+                        <div class="dd-edit-section-label">Pricing & place</div>
+
+                        <div class="dd-row">
+                            <div class="dd-field">
+                                <label for="price">Price (₹)</label>
+                                <input name="listing[price]" id="price"
+                                       value="<%= listing.price %>"
+                                       type="text" class="dd-input" required>
+                                <div class="invalid-feedback">Please enter a valid price</div>
+                            </div>
+
+                            <div class="dd-field">
+                                <label for="country">Country</label>
+                                <input name="listing[country]" id="country"
+                                       value="<%= listing.country %>"
+                                       type="text" class="dd-input" required>
+                                <div class="invalid-feedback">Please enter a country</div>
+                            </div>
+                        </div>
+
+                        <div class="dd-field">
+                            <label for="location">Location</label>
+                            <input name="listing[location]" id="location"
+                                   value="<%= listing.location %>"
+                                   type="text" class="dd-input" required>
+                            <div class="invalid-feedback">Please enter a location</div>
+                        </div>
+
+                        <div class="dd-field">
+                            <label for="category">Category</label>
+                            <select name="listing[category]" id="category" class="dd-select">
+                                <option value="trending" <%= listing.category === "trending" ? "selected" : "" %>>Trending</option>
+                                <option value="rooms" <%= listing.category === "rooms" ? "selected" : "" %>>Rooms</option>
+                                <option value="iconic cities" <%= listing.category === "iconic cities" ? "selected" : "" %>>Iconic Cities</option>
+                                <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
+                                <option value="castles" <%= listing.category === "castles" ? "selected" : "" %>>Castles</option>
+                                <option value="amazing pools" <%= listing.category === "amazing pools" ? "selected" : "" %>>Amazing Pools</option>
+                                <option value="camping" <%= listing.category === "camping" ? "selected" : "" %>>Camping</option>
+                                <option value="farms" <%= listing.category === "farms" ? "selected" : "" %>>Farms</option>
+                                <option value="arctic" <%= listing.category === "arctic" ? "selected" : "" %>>Arctic</option>
+                            </select>
+                        </div>
+
+                        <div class="dd-actions">
+                            <button type="submit" class="dd-btn-save">Save changes</button>
+                            <a href="/listings/<%= listing._id %>" class="dd-btn-cancel">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
